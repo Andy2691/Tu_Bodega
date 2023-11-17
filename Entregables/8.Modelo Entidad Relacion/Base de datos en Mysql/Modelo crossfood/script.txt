@@ -1,0 +1,494 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema tu_bodega
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema tu_bodega
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `tu_bodega` DEFAULT CHARACTER SET latin1 ;
+USE `tu_bodega` ;
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Cargo_empleado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Cargo_empleado` (
+  `id_cargoEmpleado` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(60) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_cargoEmpleado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Tipo_identificacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Tipo_identificacion` (
+  `id_tipoIdentificacion` INT NOT NULL AUTO_INCREMENT,
+  `tipoIdentificacion` VARCHAR(45) NULL COMMENT '/*Tipo de identificacion*/\ncedula de ciudadania\ncedula de extrangeria \ncedula digital\n\n',
+  PRIMARY KEY (`id_tipoIdentificacion`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Clientes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Clientes` (
+  `id_cliente` VARCHAR(20) NOT NULL,
+  `nombreUno` VARCHAR(45) NOT NULL,
+  `nombreDos` VARCHAR(45) NULL,
+  `apellidoUno` VARCHAR(45) NOT NULL,
+  `apellidoDos` VARCHAR(45) NULL,
+  `id_tipoIdentificacion` INT NULL,
+  `correo` VARCHAR(60) NOT NULL,
+  PRIMARY KEY (`id_cliente`),
+  UNIQUE INDEX `correo_UNIQUE` (`correo` ASC) ,
+  UNIQUE INDEX `id_cliente_UNIQUE` (`id_cliente` ASC) ,
+  INDEX `fk_Clientes_Tipo_identificacion1_idx` (`id_tipoIdentificacion` ASC) ,
+  UNIQUE INDEX `id_tipoIdentificacion_UNIQUE` (`id_tipoIdentificacion` ASC) ,
+  CONSTRAINT `fk_Clientes_Tipo_identificacion1`
+    FOREIGN KEY (`id_tipoIdentificacion`)
+    REFERENCES `tu_bodega`.`Tipo_identificacion` (`id_tipoIdentificacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Telefono_cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Telefono_cliente` (
+  `id_telefono` INT(11) NOT NULL AUTO_INCREMENT,
+  `telefono` VARCHAR(45) NULL DEFAULT NULL,
+  `tipoTelefono` VARCHAR(45) NULL,
+  `id_cliente` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id_telefono`),
+  UNIQUE INDEX `telefono_UNIQUE` (`telefono` ASC) ,
+  INDEX `fk_Telefono_cliente_Clientes1_idx` (`id_cliente` ASC) ,
+  CONSTRAINT `fk_Telefono_cliente_Clientes1`
+    FOREIGN KEY (`id_cliente`)
+    REFERENCES `tu_bodega`.`Clientes` (`id_cliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`supermercado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`supermercado` (
+  `nit_supermercado` VARCHAR(20) NOT NULL,
+  `nombre` VARCHAR(60) NULL DEFAULT NULL,
+  `direccionSupermercado` VARCHAR(100) NULL DEFAULT NULL,
+  `telefono` VARCHAR(45) NULL,
+  `correo` VARCHAR(45) NULL,
+  PRIMARY KEY (`nit_supermercado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`cotizaciones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`cotizaciones` (
+  `id_cotizacion` INT(11) NOT NULL AUTO_INCREMENT,
+  `fechaCotizacion` DATE NOT NULL,
+  `nit_supermercado` VARCHAR(20) NULL,
+  PRIMARY KEY (`id_cotizacion`),
+  INDEX `fk_cotizacion_supermercado1_idx` (`nit_supermercado` ASC) ,
+  CONSTRAINT `fk_cotizacion_supermercado1`
+    FOREIGN KEY (`nit_supermercado`)
+    REFERENCES `tu_bodega`.`supermercado` (`nit_supermercado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Direccion_cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Direccion_cliente` (
+  `id_direccion` INT(11) NOT NULL AUTO_INCREMENT,
+  `direccionCliente` VARCHAR(100) NULL DEFAULT NULL,
+  `descrpcion` TEXT(200) NULL,
+  PRIMARY KEY (`id_direccion`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Empleados`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Empleados` (
+  `id_empleado` VARCHAR(20) NOT NULL,
+  `nombreUno` VARCHAR(45) NOT NULL,
+  `nombreDos` VARCHAR(45) NULL,
+  `apellidoUno` VARCHAR(45) NOT NULL,
+  `apellidoDos` VARCHAR(45) NULL,
+  `email` VARCHAR(60) NOT NULL,
+  `contraseña` VARCHAR(45) NOT NULL,
+  `id_cargoEmpleado` INT(11) NULL,
+  `direccion` TEXT(200) NULL,
+  PRIMARY KEY (`id_empleado`),
+  INDEX `fk_Empleados_Cargo_empleado1_idx` (`id_cargoEmpleado` ASC) ,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
+  CONSTRAINT `fk_Empleados_Cargo_empleado1`
+    FOREIGN KEY (`id_cargoEmpleado`)
+    REFERENCES `tu_bodega`.`Cargo_empleado` (`id_cargoEmpleado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Telefono_empleado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Telefono_empleado` (
+  `telefono` VARCHAR(45) NULL DEFAULT NULL,
+  `tipoTelefono` VARCHAR(45) NULL,
+  `id_empleado` VARCHAR(20) NULL,
+  INDEX `fk_Telefono_empleado_Empleados1_idx` (`id_empleado` ASC) ,
+  CONSTRAINT `fk_Telefono_empleado_Empleados1`
+    FOREIGN KEY (`id_empleado`)
+    REFERENCES `tu_bodega`.`Empleados` (`id_empleado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`estado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`estado` (
+  `idestado` INT(11) NOT NULL,
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idestado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Informacion_tributaria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Informacion_tributaria` (
+  `id_informacionTributaria` INT(11) NOT NULL AUTO_INCREMENT,
+  `tipoDeIdentificacion` VARCHAR(100) NULL DEFAULT NULL COMMENT '/*tipo de identificaicon*/\nNIT\nCedula de ciudadania\n',
+  PRIMARY KEY (`id_informacionTributaria`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`TipoDePersona`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`TipoDePersona` (
+  `idTipoDePersona` INT NOT NULL AUTO_INCREMENT,
+  `TipoDePersona` VARCHAR(45) NULL COMMENT '/*Tipo de persona*/\nnatural \njuridica',
+  PRIMARY KEY (`idTipoDePersona`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Proveedores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Proveedores` (
+  `id_proveedor` VARCHAR(20) NOT NULL,
+  `id_informacionTributaria` INT(11) NULL,
+  `id_tipoDePersona` INT NULL,
+  `nombreUno` VARCHAR(45) NOT NULL,
+  `nombreDos` VARCHAR(45) NULL,
+  `apellidoUno` VARCHAR(45) NULL,
+  `apellidoDos` VARCHAR(45) NULL,
+  `correo` VARCHAR(255) NULL DEFAULT NULL,
+  `direccion` TEXT(200) NULL,
+  PRIMARY KEY (`id_proveedor`),
+  UNIQUE INDEX `correo_UNIQUE` (`correo` ASC) ,
+  INDEX `fk_Proveedores_Infotmacion_tributaria1_idx` (`id_informacionTributaria` ASC) ,
+  INDEX `fk_Proveedores_TipoDePersona1_idx` (`id_tipoDePersona` ASC) ,
+  UNIQUE INDEX `TipoDePersona_idTipoDePersona_UNIQUE` (`id_tipoDePersona` ASC) ,
+  CONSTRAINT `fk_Proveedores_Infotmacion_tributaria1`
+    FOREIGN KEY (`id_informacionTributaria`)
+    REFERENCES `tu_bodega`.`Informacion_tributaria` (`id_informacionTributaria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Proveedores_TipoDePersona1`
+    FOREIGN KEY (`id_tipoDePersona`)
+    REFERENCES `tu_bodega`.`TipoDePersona` (`idTipoDePersona`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Unidad_medida`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Unidad_medida` (
+  `id_unidadMedida` INT NOT NULL AUTO_INCREMENT,
+  `medida` VARCHAR(45) NULL,
+  PRIMARY KEY (`id_unidadMedida`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Lote`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Lote` (
+  `id_Lote` INT NOT NULL AUTO_INCREMENT,
+  `numeroLote` VARCHAR(45) NULL,
+  `fechaProduccion` DATE NULL,
+  `fechaCaducidad` DATE NULL,
+  `ubicacion` VARCHAR(60) NULL,
+  PRIMARY KEY (`id_Lote`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Suministros`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Suministros` (
+  `id_suministro` INT(11) NOT NULL,
+  `nombre` VARCHAR(60) NULL,
+  `descripcion` VARCHAR(60) NULL DEFAULT NULL,
+  `id_unidadMedida` INT NULL,
+  `costo` DECIMAL(10,0) NULL DEFAULT NULL,
+  `unidades` INT(11) NULL,
+  `id_proveedor` VARCHAR(20) NULL,
+  `id_Lote` INT NULL,
+  `fechaIngreso` DATE NULL,
+  `iva` DECIMAL(10,0) NULL,
+  PRIMARY KEY (`id_suministro`),
+  INDEX `idproveedor` (`id_proveedor` ASC) ,
+  INDEX `fk_Suministros_Unidad_medida1_idx` (`id_unidadMedida` ASC) ,
+  INDEX `fk_Suministros_Lote1_idx` (`id_Lote` ASC) ,
+  CONSTRAINT `suministro_ibfk_2`
+    FOREIGN KEY (`id_proveedor`)
+    REFERENCES `tu_bodega`.`Proveedores` (`id_proveedor`),
+  CONSTRAINT `fk_Suministros_Unidad_medida1`
+    FOREIGN KEY (`id_unidadMedida`)
+    REFERENCES `tu_bodega`.`Unidad_medida` (`id_unidadMedida`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Suministros_Lote1`
+    FOREIGN KEY (`id_Lote`)
+    REFERENCES `tu_bodega`.`Lote` (`id_Lote`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Productos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Productos` (
+  `id_producto` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_suministro` INT(11) NULL,
+  `valorUnitario` DECIMAL(10,0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_producto`),
+  INDEX `fk_Productos_Suministros1_idx` (`id_suministro` ASC) ,
+  CONSTRAINT `fk_Productos_Suministros1`
+    FOREIGN KEY (`id_suministro`)
+    REFERENCES `tu_bodega`.`Suministros` (`id_suministro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Productos_Cotizaciones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Productos_Cotizaciones` (
+  `id_productoCotizacion` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_cotizacion` INT(11) NULL,
+  `id_producto` INT(11) NULL,
+  `fecha` DATE NULL,
+  `unidades` INT(11) NULL,
+  `totalSinIva` DECIMAL(10,0) NULL,
+  `totalConIva` DECIMAL(10,0) NULL,
+  `observaciones` TEXT(200) NULL,
+  PRIMARY KEY (`id_productoCotizacion`),
+  INDEX `fk_cotizacion_has_producto_producto1_idx` (`id_producto` ASC) ,
+  INDEX `fk_cotizacion_has_producto_cotizacion1_idx` (`id_cotizacion` ASC) ,
+  CONSTRAINT `fk_cotizacion_has_producto_cotizacion1`
+    FOREIGN KEY (`id_cotizacion`)
+    REFERENCES `tu_bodega`.`cotizaciones` (`id_cotizacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cotizacion_has_producto_producto1`
+    FOREIGN KEY (`id_producto`)
+    REFERENCES `tu_bodega`.`Productos` (`id_producto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Ordenes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Ordenes` (
+  `id_orden` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` VARCHAR(20) NULL,
+  `Productos_Cotizaciones_id_productoCotizacion` INT(11) NULL,
+  `nit_supermercado` VARCHAR(20) NULL,
+  PRIMARY KEY (`id_orden`),
+  INDEX `fk_Orden_Cliente1_idx` (`id_cliente` ASC) ,
+  INDEX `fk_Orden_supermercado1_idx` (`nit_supermercado` ASC) ,
+  INDEX `fk_Ordenes_Productos_Cotizaciones1_idx` (`Productos_Cotizaciones_id_productoCotizacion` ASC) ,
+  UNIQUE INDEX `Productos_Cotizaciones_id_productoCotizacion_UNIQUE` (`Productos_Cotizaciones_id_productoCotizacion` ASC) ,
+  CONSTRAINT `fk_Orden_Cliente1`
+    FOREIGN KEY (`id_cliente`)
+    REFERENCES `tu_bodega`.`Clientes` (`id_cliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orden_supermercado1`
+    FOREIGN KEY (`nit_supermercado`)
+    REFERENCES `tu_bodega`.`supermercado` (`nit_supermercado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Ordenes_Productos_Cotizaciones1`
+    FOREIGN KEY (`Productos_Cotizaciones_id_productoCotizacion`)
+    REFERENCES `tu_bodega`.`Productos_Cotizaciones` (`id_productoCotizacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Facturas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Facturas` (
+  `id_factura` INT(11) NOT NULL AUTO_INCREMENT,
+  `fechaFactura` DATE NULL DEFAULT NULL,
+  `nit_supermercado` VARCHAR(20) NULL,
+  `id_orden` INT(11) NULL,
+  PRIMARY KEY (`id_factura`),
+  INDEX `fk_Factura_supermercado1_idx` (`nit_supermercado` ASC) ,
+  INDEX `fk_Factura_Orden1_idx` (`id_orden` ASC) ,
+  CONSTRAINT `fk_Factura_supermercado1`
+    FOREIGN KEY (`nit_supermercado`)
+    REFERENCES `tu_bodega`.`supermercado` (`nit_supermercado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Factura_Orden1`
+    FOREIGN KEY (`id_orden`)
+    REFERENCES `tu_bodega`.`Ordenes` (`id_orden`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Procesos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Procesos` (
+  `id_proceso` INT(11) NOT NULL AUTO_INCREMENT,
+  `fecha` DATE NULL DEFAULT NULL,
+  `id_orden` INT(11) NULL,
+  `id_empleado` VARCHAR(20) NULL,
+  PRIMARY KEY (`id_proceso`),
+  INDEX `idorden` (`id_orden` ASC) ,
+  INDEX `idempleado` (`id_empleado` ASC) ,
+  CONSTRAINT `proceso_ibfk_1`
+    FOREIGN KEY (`id_orden`)
+    REFERENCES `tu_bodega`.`Ordenes` (`id_orden`),
+  CONSTRAINT `proceso_ibfk_2`
+    FOREIGN KEY (`id_empleado`)
+    REFERENCES `tu_bodega`.`Empleados` (`id_empleado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`proceso_estado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`proceso_estado` (
+  `id_proceso` INT(11) NULL DEFAULT '0',
+  `id_estado` INT(11) NULL DEFAULT '0',
+  INDEX `idestado` (`id_estado` ASC) ,
+  CONSTRAINT `proceso_estado_ibfk_1`
+    FOREIGN KEY (`id_proceso`)
+    REFERENCES `tu_bodega`.`Procesos` (`id_proceso`),
+  CONSTRAINT `proceso_estado_ibfk_2`
+    FOREIGN KEY (`id_estado`)
+    REFERENCES `tu_bodega`.`estado` (`idestado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Telefono_proveedor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Telefono_proveedor` (
+  `id_telefono` INT(10) NULL AUTO_INCREMENT,
+  `telefono` VARCHAR(60) NULL,
+  `tipoTelefono` VARCHAR(60) NULL,
+  PRIMARY KEY (`id_telefono`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Cliente_Direccion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Cliente_Direccion` (
+  `id_cliente` VARCHAR(20) NULL,
+  `id_direccion` INT(11) NULL,
+  INDEX `fk_cliente_has_direccion_cli_direccion_cli1_idx` (`id_direccion` ASC) ,
+  INDEX `fk_cliente_has_direccion_cli_cliente1_idx` (`id_cliente` ASC) ,
+  CONSTRAINT `fk_cliente_has_direccion_cli_cliente1`
+    FOREIGN KEY (`id_cliente`)
+    REFERENCES `tu_bodega`.`Clientes` (`id_cliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cliente_has_direccion_cli_direccion_cli1`
+    FOREIGN KEY (`id_direccion`)
+    REFERENCES `tu_bodega`.`Direccion_cliente` (`id_direccion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `tu_bodega`.`Proveedores_has_Telefono_proveedor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tu_bodega`.`Proveedores_has_Telefono_proveedor` (
+  `Proveedores_id_proveedor` VARCHAR(20) NOT NULL,
+  `Telefono_proveedor_id_telefono` INT(10) NOT NULL,
+  INDEX `fk_Proveedores_has_Telefono_proveedor_Telefono_proveedor1_idx` (`Telefono_proveedor_id_telefono` ASC) ,
+  INDEX `fk_Proveedores_has_Telefono_proveedor_Proveedores1_idx` (`Proveedores_id_proveedor` ASC) ,
+  UNIQUE INDEX `Proveedores_id_proveedor_UNIQUE` (`Proveedores_id_proveedor` ASC) ,
+  UNIQUE INDEX `Telefono_proveedor_id_telefono_UNIQUE` (`Telefono_proveedor_id_telefono` ASC) ,
+  CONSTRAINT `fk_Proveedores_has_Telefono_proveedor_Proveedores1`
+    FOREIGN KEY (`Proveedores_id_proveedor`)
+    REFERENCES `tu_bodega`.`Proveedores` (`id_proveedor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Proveedores_has_Telefono_proveedor_Telefono_proveedor1`
+    FOREIGN KEY (`Telefono_proveedor_id_telefono`)
+    REFERENCES `tu_bodega`.`Telefono_proveedor` (`id_telefono`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

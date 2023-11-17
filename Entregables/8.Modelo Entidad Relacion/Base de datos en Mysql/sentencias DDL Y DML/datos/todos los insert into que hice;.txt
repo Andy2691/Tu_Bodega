@@ -1,0 +1,294 @@
+INSERT INTO tipo_identificacion (id_tipoIdentificacion, tipoIdentificacion)
+VALUES
+(1, 'CEDULA DE CIUDADANIA'),
+(2, 'CEDULA DE EXTRANGERIA'),
+(3, 'PERMISO DE PERMANENCIA');
+
+
+INSERT INTO clientes (id_cliente, correo, nombreUno, nombreDos, apellidoUno, apellidoDos, id_tipoIdentificacion)
+VALUES
+(1233489895, 'kamilo711@hotmail.com', 'cristian', 'camilo', 'castillo', 'rodriguez', 1),
+(5489565685, 'luisc02@hotmail.com', 'luis', 'alfredo', 'castillo', 'huertas', 1),
+(782954565, 'venecoh@hotmail.com', 'adolfo', '', 'hitler', '', 2),
+(7952016554, 'mab115@hotmail.com', 'mairon', 'steven', 'delgado', 'garcia', 1),
+(7985864237, 'flor1224@hotmail.com', 'flor', 'clemencia', 'rodriguez', 'duque', 1);
+
+
+INSERT INTO telefono_cliente (id_telefono, telefono, tipoTelefono, id_cliente)
+VALUES
+(1, '6017110362', 'FIJO', 1233489895),
+(2, '6015643606', 'FIJO', 7952016554),
+(3, '3133471809', 'MOVIL', 1233489895),
+(4, '3186643249', 'MOVIL', 7952016554),
+(5, '6017643606', 'FIJO', 5489565685),
+(6, '3123471809', 'MOVIL', 7985864237),
+(7, '3176643249', 'MOVIL', 7985864237),
+(8, '3012162587', 'MOVIL', 782954565);
+
+
+INSERT INTO direccion_cliente (id_direccion, direccionCliente, orientacion, barrio)
+VALUES
+(1, 'calle 72 # 42 -59', 'sur', 'moravia2'),
+(2, 'carrera 72k Bis # 42-59', 'sur', 'villa del rio'),
+(3, 'Diagonal 12 calle23 -45', 'sur', 'madelena'),
+(4, 'calle falsa 123', 'sur', 'castilla'),
+(5, 'calle rosa 7978', 'sur', 'bronx');
+
+
+INSERT INTO cliente_direccion (id_cliente,id_direccion)
+VALUES
+('1233489895',1),
+('5489565685',2),
+('782954565',3),
+('7952016554',4),
+('7985864237',5);
+
+
+INSERT INTO supermercado (nit_supermercado,nombre,direccionSupermercado,telefono,correo)
+VALUES
+('123456789-0','Mini-Super','calle 71k # 23-45 sur','3136849587','quikymark@gmail.com');
+
+
+
+INSERT INTO cotizaciones (fechaCotizacion,nit_supermercado)
+VALUES
+('2023-01-05','123456789-0'),
+('2023-02-14','123456789-0'),
+('2023-03-22','123456789-0'),
+('2023-04-10','123456789-0'),
+('2023-05-18','123456789-0'),
+('2023-06-07','123456789-0'),
+('2023-07-25','123456789-0'),
+('2023-08-15','123456789-0'),
+('2023-09-03','123456789-0'),
+('2023-10-12','123456789-0');
+
+
+
+INSERT INTO Informacion_tributaria (tipoInformacion)
+VALUES
+('C.C'),
+('Nit');
+
+
+
+INSERT INTO proveedores(id_proveedor,correo,nombreUno,nombreDos,apellidoUno,apellidoDos,id_informacionTributaria)
+VALUES
+('145694784-5', 'gradoDorado@hotmail.com', 'Mundial de Granos S.A.S', '', '', '', 2),
+('345694584-0', 'azul-l@hotmail.com', 'azul-l S.A.S', '', '', '', 2),
+('222694784-5', 'aceitoso@hotmail.com', 'aseitosos S.A.S', '', '', '', 2),
+('2688495685', 'jorge@hotmail.com', 'jorge', 'rata', 'melo', 'zapo', 1),
+('1558554644', 'manula@hotmail.com', 'juana', 'manulea', 'beltran', 'beltran', 1);
+
+
+
+INSERT INTO telefono_proveedor (telefono,tipoTelefono,id_proveedor)
+VALUES
+('6015110362','FIJO','145694784-5'),
+('6014559836','FIJO','345694584-0'),
+('3135792468','MOVIL','222694784-5'),
+('6017824305','FIJO','2688495685'),
+('3105697004','MOVIL','1558554644');
+
+
+INSERT INTO direccion_proveedor (direccionProveedor)
+VALUES
+('calle 12345'),
+('carrera 76 D 23-89'),
+('diagonal 25 G'),
+('calle 29 - Tranversarl 89'),
+('calle 23F 34-76'),
+('carrera 73N Bis # 45-98'),
+('Diagonal 98'),
+('carrera 45D 54.78');
+
+
+
+INSERT INTO proveedor_direccion (id_proveedor,id_direccionProveedor)
+VALUES
+('145694784-5',1),
+('145694784-5',2),
+('345694584-0',3),
+('345694584-0',4),
+('222694784-5',5),
+('222694784-5',6),
+('2688495685',7),
+('1558554644',8);
+
+
+
+INSERT INTO unidad_medida(medida)
+VALUES
+('Litros'),
+('Mililitros'),
+('Galones'),
+('kilogramos'),
+('Gramos'),
+('Libras');
+
+
+
+
+INSERT INTO lote (numeroLote,fechaProduccion,fechaCaducidad,ubicacion)
+VALUES
+('12345','2023-01-01','2024-01-01','Almacen 3 estante 2 lado a'),
+('12346','2022-12-01','2023-12-01','Almacen 1 estante 1 lado b'),
+('12347','2022-11-20','2023-11-20','Almacen 2 estante 3 lado a'),
+('12348','2022-11-15','2023-11-15','Almacen 1 estante 4 lado c'),
+('12349','2022-10-10','2023-12-10','Almacen 3 estante 2 lado b'),
+('12350','2022-09-05','2023-11-05','Almacen 2 estante 5 lado a'),
+('12351','2022-08-01','2024-08-01','Almacen 1 estante 1 lado a'),
+('12352','2022-07-15','2024-07-15','Almacen 3 estante 6 lado c'),
+('12353','2022-06-10','2024-06-10','Almacen 2 estante 4 lado b'),
+('12354','2022-05-20','2024-05-20','Almacen 1 estante 7 lado a'),
+('12355','2022-04-15','2024-04-15','Almacen 3 estante 8 lado b');
+
+
+
+INSERT INTO suministros (id_suministro, nombre, descripcion, id_unidadMedida, costo, unidades, id_Lote, id_proveedor) VALUES
+(1, 'Aceite de cocina','Aceite de cosina x 1 litro', 1, 3500, 20, 1, '145694784-5'),
+(2, 'Azucar', 'azucar morena x 1 kilogramo', 4, 5000, 25, 2, '1558554644'),
+(3, 'Leche','leche deslactosada x 1 litro', 1, 4000, 150, 3, '222694784-5'),
+(4, 'Sal', 'sal marina x 1 kilogramo', 4, 5000, 300, 4, '2688495685'),
+(5, 'Arroz','Arroz fortifiaco x 1 kilogramo', 5, 1000, 550, 5, '345694584-0'),
+(6, 'Cafe', 'cafe de marihuana x 1 kilogramo', 4, 2000, 200, 6, '145694784-5'),
+(7, 'Te', 'te de marihuana x 500 gramos', 5, 3000, 22, 7, '1558554644'),
+(8, 'Pasta', 'pasta la malpa x 1 kilogramo', 4, 2000, 450, 8, '222694784-5'),
+(9, 'Mantequilla','Mantequilla de oveja x 400 gramos', 5, 400, 150, 9, '2688495685'),
+(10, 'Pan', 'pan tajado x 900 gramos', 5, 1500, 120, 10, '345694584-0'),
+(11, 'Huevos','canasta de huevos x 15 unidades', 7, 2500, 300, 11, '145694784-5'),
+(12, 'Queso', 'queso tajado x 1 kilogramos', 4, 6000, 25, 11, '1558554644'),
+(13, 'Avena', 'avena de coca x 2 kilogramos', 4, 1800, 40, 11, '222694784-5'),
+(14, 'Jabon', 'barra de jabon para manos x 1 unidad', 7, 1000, 300, 10, '2688495685');
+
+
+INSERT INTO productos (id_suministro,ValorUnitario)
+VALUES
+(1,4500),
+(2,6000),
+(3,6000),
+(4,6000),
+(5,2000),
+(6,3000),
+(7,4000),
+(8,3000),
+(9,1400),
+(10,1900),
+(11,3500),
+(12,7000),
+(13,2800),
+(14,1500);
+
+
+
+
+INSERT INTO productos_cotizaciones (id_cotizacion, id_producto, unidades)
+VALUES
+(1, 1, 15),
+(2, 2, 20),
+(3, 3, 90),
+(4, 4, 100),
+(5, 4, 100),
+(6, 4, 50),
+(7, 5, 10),
+(8, 6, 100),
+(9, 12, 15),
+(10 ,14, 100);
+
+
+
+INSERT INTO detalle_compra (observaciones, id_productoCotizacion)
+ VALUES
+('10% de descuento despues de 10 unidades', 1),
+('', 2),
+('', 3),
+('', 4);
+
+
+
+INSERT INTO ordenes (id_cliente,id_detalle,fechaOrden,nit_supermercado)
+VALUES
+('1233489895', 1, '2023-01-05', '123456789-0'),
+('5489565685', 2, '2023-02-15', '123456789-0'),
+('7985864237', 3, '2023-03-22', '123456789-0'),
+('782954565', 4, '2023-04-10', '123456789-0');   
+
+
+INSERT INTO facturas (fechaFactura, id_orden, nit_supermercado)
+VALUES
+('2023-01-05', 1, '123456789-0'),
+('2023-02-15', 2, '123456789-0'),
+('2023-03-22', 3, '123456789-0'),
+('2023-04-10', 4, '123456789-0');
+
+
+INSERT INTO cargo_empleado (nombre)
+VALUES
+('GERENTE'),
+('SUBGERENTE'),
+('ADMINISTRATIVO');
+
+INSERT INTO empleados (id_empleado,email,contrasena,nombreUno,nombreDos,apellidoUno,apellidoDos,id_cargoEmpleado)
+VALUES
+('1236598720', 'gerente@hotmail.com','123456', 'copo', 'roko', 'pint', 'rexi', 1),
+('7951357851', 'subgern@hotmail.com','678912', 'stan', 'loko', 'pony', 'luki', 2),
+('4579526569', 'adminis@hotmail.com','314567', 'dook', 'poko', 'mike', 'funy', 3);
+
+
+
+INSERT INTO telefono_empleado (telefono, tipoTelefono, id_empleado)
+VALUES
+('3113471809', 'MOVIL', '1236598720'),
+('3215784585', 'MOVIL', '7951357851'),
+('3005858525', 'MOVIL', '4579526569');
+
+
+INSERT INTO estado (nombre)
+VALUES
+('Entregado'),
+('En poroceso');
+('En despacho');
+
+
+
+
+INSERT INTO PROCESOS (id_orden, id_empleado, fecha)
+VALUES
+(1, '7951357851', '2023-01-05'),
+(2, '7951357851', '2023-02-15'),
+(3, '7951357851', '2023-03-22'),
+(4, '7951357851', '2023-04-10');
+
+
+
+INSERT INTO proceso_estado (id_proceso, id_estado)
+VALUES
+(1,2),
+(2,2),
+(3,3),
+(4,3);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
