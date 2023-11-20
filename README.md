@@ -31,6 +31,11 @@
 
 
 - Interfaz Amigable: Interfaz intuitiva y fácil de usar que reduce la curva de aprendizaje y mejora la eficiencia.
+<h2></h2>
+<h3>Tambien visita</h3>
+<a href="https://github.com/castlefenix/Proto-Proyecto-Tu-Bodega">Repo prototipo</a>
+
+
 
 ------------
 
