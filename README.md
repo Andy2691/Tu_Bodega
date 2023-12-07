@@ -17,15 +17,7 @@
 
 - Registro de Inventarios: Permite a los usuarios mantener un registro detallado de los productos en inventario, incluyendo cantidades, ubicaciones y estado.
 
-------------
 
-
-- Balances Contables: Genera balances contables para ofrecer una vista clara de la situación financiera de la empresa.
-
-------------
-
-
-- Auditorías: Facilita la realización de auditorías internas y externas con reportes detallados y fácil acceso a la información relevante.
 
 ------------
 
